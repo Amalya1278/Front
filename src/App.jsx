@@ -84,6 +84,9 @@ function App() {
       setBasket([...basket, { ...product, count: 1 }]);
     }
   };
+  const moveFromCart = (product) => {
+    setBasket(basket.filter((item) => item.id != product.id));
+  };
   const quantityUp = (product) => {
     setBasket(
       basket.map((item) =>
@@ -91,6 +94,17 @@ function App() {
       )
     );
   };
+  const quantityDown = (product) => {
+    setBasket(
+      basket.map((item) =>
+        item.id != product.id ? item : { ...item, count: item.count - 1 }
+      )
+    );
+    if(product.count<2){
+      moveFromCart(product)
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <h1 className="text-3xl font-bold text-center py-6">Online Shop</h1>
@@ -158,7 +172,9 @@ function App() {
                     >
                       -
                     </button>
-                    <button className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-2 rounded">
+                    <button 
+                    onClick={()=>moveFromCart(item)}
+                    className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-2 rounded">
                       x
                     </button>
                   </td>
